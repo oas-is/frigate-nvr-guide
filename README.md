@@ -5,6 +5,12 @@
 [![NetworkChuck YouTube](https://img.shields.io/badge/YouTube-NetworkChuck-red?style=flat&logo=youtube)](https://youtube.com/@NetworkChuck)
 [![Frigate](https://img.shields.io/badge/Frigate-NVR-blue)](https://frigate.video/)
 
+## 🎬 Watch the Video
+
+[![Frigate NVR Tutorial](https://img.youtube.com/vi/tbCKWX34_G4/maxresdefault.jpg)](https://youtu.be/tbCKWX34_G4)
+
+**[▶️ Watch: "you need to learn Frigate RIGHT NOW!!" on YouTube](https://youtu.be/tbCKWX34_G4)**
+
 ## Why Frigate?
 
 Your surveillance cameras might be watching you - and so might someone else. Cloud-connected cameras have their feeds sold on the dark web. With Frigate:
