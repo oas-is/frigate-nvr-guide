@@ -28,17 +28,31 @@ Your surveillance cameras might be watching you - and so might someone else. Clo
 
 ---
 
+## Shopping List
+
+Here's exactly what I used in the video:
+
+| Component | Link | Price |
+|-----------|------|-------|
+| **Raspberry Pi 5 (8GB)** | [Buy on Amazon](https://geni.us/q7BXLZN) | ~$80 |
+| **Hailo-8L AI HAT** | [Buy on Amazon](https://geni.us/9r4Z) | ~$70 |
+| **Reolink E1 Pro Camera** | [Buy on Amazon](https://geni.us/d9dS) | ~$56 |
+| **Google Coral USB** | [Buy on Amazon](https://geni.us/BjOg72c) | ~$100 |
+
+---
+
 ## Table of Contents
 
-1. [Hardware Requirements](#hardware-requirements)
-2. [Quick Start (Raspberry Pi)](#quick-start-raspberry-pi)
-3. [Desktop/Server Setup](#desktopserver-setup)
-4. [Camera Setup (Reolink)](#camera-setup-reolink)
-5. [Progressive Configuration Guide](#progressive-configuration-guide)
-6. [WiFi Troubleshooting](#wifi-troubleshooting-the-hidden-metric)
-7. [AI Accelerator Setup](#ai-accelerator-setup)
-8. [Home Assistant Integration](#home-assistant-integration)
-9. [Troubleshooting](#troubleshooting)
+1. [Shopping List](#shopping-list)
+2. [Hardware Requirements](#hardware-requirements)
+3. [Quick Start (Raspberry Pi)](#quick-start-raspberry-pi)
+4. [Desktop/Server Setup](#desktopserver-setup)
+5. [Camera Setup (Reolink)](#camera-setup-reolink)
+6. [Progressive Configuration Guide](#progressive-configuration-guide)
+7. [WiFi Troubleshooting](#wifi-troubleshooting-the-hidden-metric)
+8. [AI Accelerator Setup](#ai-accelerator-setup)
+9. [Home Assistant Integration](#home-assistant-integration)
+10. [Troubleshooting](#troubleshooting)
 
 ---
 
@@ -48,10 +62,10 @@ Your surveillance cameras might be watching you - and so might someone else. Clo
 
 | Component | Recommendation | Notes |
 |-----------|---------------|-------|
-| **Computer** | Raspberry Pi 5 (8GB) | 4GB works but 8GB recommended |
+| **Computer** | [Raspberry Pi 5 (8GB)](https://geni.us/q7BXLZN) | 4GB works but 8GB recommended |
 | **Storage** | 128GB+ microSD or NVMe | NVMe via HAT recommended for recording |
-| **AI Accelerator** | [Hailo-8L AI HAT](https://www.raspberrypi.com/products/ai-hat/) (~$70) | Optional but highly recommended |
-| **Cameras** | RTSP-compatible cameras | Reolink E1 Pro tested ($56 each) |
+| **AI Accelerator** | [Hailo-8L AI HAT](https://geni.us/9r4Z) (~$70) | Optional but highly recommended |
+| **Cameras** | [Reolink E1 Pro](https://geni.us/d9dS) (~$56 each) | PTZ, WiFi, RTSP support |
 
 ### Option 2: Desktop/Server Setup (5+ cameras)
 
@@ -59,13 +73,14 @@ Your surveillance cameras might be watching you - and so might someone else. Clo
 |-----------|---------------|-------|
 | **Computer** | Any x86 Linux machine | Old gaming PC works great |
 | **GPU** | NVIDIA GPU (optional) | For hardware video decoding |
-| **AI Accelerator** | [Google Coral USB](https://coral.ai/products/accelerator) (~$100) | Handles all AI inference |
+| **AI Accelerator** | [Google Coral USB](https://geni.us/BjOg72c) (~$100) | Handles all AI inference |
 | **Storage** | SSD + HDD/NAS | SSD for cache, HDD for recordings |
 
 ### Cameras
 
 Any RTSP-compatible camera works. Tested/recommended brands:
-- **Reolink** (E1 Pro, RLC-series) - Budget-friendly, reliable
+- **[Reolink E1 Pro](https://geni.us/d9dS)** - Budget-friendly, PTZ, WiFi (what I used)
+- **Reolink RLC-series** - Outdoor, PoE options
 - **Amcrest** - Good RTSP support
 - **Dahua** - Professional grade
 - **UniFi Protect** - Works with RTSP enabled
@@ -439,7 +454,7 @@ cameras:
 
 ## AI Accelerator Setup
 
-### Hailo-8L AI HAT (Raspberry Pi 5)
+### [Hailo-8L AI HAT](https://geni.us/9r4Z) (Raspberry Pi 5)
 
 > **CRITICAL:** Frigate 0.15.x requires Hailo driver version **4.19**. Do NOT use the latest drivers!
 
@@ -553,7 +568,7 @@ cameras:
 | CPU Usage | 200%+ | 15-20% |
 | Max Cameras | 1-2 | 4-6 |
 
-### Google Coral USB (Desktop)
+### [Google Coral USB](https://geni.us/BjOg72c) (Desktop)
 
 #### Install Coral Drivers
 
