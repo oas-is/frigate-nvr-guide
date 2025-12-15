@@ -1,0 +1,137 @@
+# Phase 6: go2rtc + Multiple Cameras
+# Purpose: Reduce WiFi load by having ONE connection to each camera
+# go2rtc receives the stream, then redistributes it locally
+
+mqtt:
+  enabled: false
+
+# go2rtc configuration - receives streams and rebroadcasts them
+go2rtc:
+  streams:
+    # Front door camera
+    front_door:
+      - ffmpeg:rtsp://admin:YOUR_PASSWORD@10.13.13.10:554/h265Preview_01_main#video=copy#audio=copy
+    front_door_sub:
+      - ffmpeg:rtsp://admin:YOUR_PASSWORD@10.13.13.10:554/h265Preview_01_sub
+
+    # Backyard camera
+    backyard:
+      - ffmpeg:rtsp://admin:YOUR_PASSWORD@10.13.13.11:554/h265Preview_01_main#video=copy#audio=copy
+    backyard_sub:
+      - ffmpeg:rtsp://admin:YOUR_PASSWORD@10.13.13.11:554/h265Preview_01_sub
+
+    # Kitchen camera
+    kitchen:
+      - ffmpeg:rtsp://admin:YOUR_PASSWORD@10.13.13.12:554/h265Preview_01_main#video=copy#audio=copy
+    kitchen_sub:
+      - ffmpeg:rtsp://admin:YOUR_PASSWORD@10.13.13.12:554/h265Preview_01_sub
+
+# Detector (adjust based on your hardware)
+detectors:
+  hailo:
+    type: hailo8l
+    device: PCIe
+
+model:
+  width: 300
+  height: 300
+  input_tensor: nhwc
+  input_pixel_format: bgr
+  model_type: ssd
+  path: /config/model_cache/h8l_cache/ssd_mobilenet_v1.hef
+
+ffmpeg:
+  hwaccel_args: preset-rpi-64-h264
+
+objects:
+  track:
+    - person
+    - car
+    - dog
+    - cat
+
+record:
+  enabled: true
+  retain:
+    days: 7
+    mode: motion
+
+cameras:
+  front_door:
+    ffmpeg:
+      inputs:
+        # Connect to go2rtc restream (localhost), NOT directly to camera
+        - path: rtsp://127.0.0.1:8554/front_door
+          input_args: preset-rtsp-restream
+          roles:
+            - record
+        - path: rtsp://127.0.0.1:8554/front_door_sub
+          input_args: preset-rtsp-restream
+          roles:
+            - detect
+    detect:
+      enabled: true
+      width: 896
+      height: 512
+      fps: 5
+    record:
+      enabled: true
+    # PTZ control (if camera supports it)
+    onvif:
+      host: 10.13.13.10
+      port: 8000
+      user: admin
+      password: YOUR_PASSWORD
+
+  backyard:
+    ffmpeg:
+      inputs:
+        - path: rtsp://127.0.0.1:8554/backyard
+          input_args: preset-rtsp-restream
+          roles:
+            - record
+        - path: rtsp://127.0.0.1:8554/backyard_sub
+          input_args: preset-rtsp-restream
+          roles:
+            - detect
+    detect:
+      enabled: true
+      width: 896
+      height: 512
+      fps: 5
+    record:
+      enabled: true
+    onvif:
+      host: 10.13.13.11
+      port: 8000
+      user: admin
+      password: YOUR_PASSWORD
+
+  kitchen:
+    ffmpeg:
+      inputs:
+        - path: rtsp://127.0.0.1:8554/kitchen
+          input_args: preset-rtsp-restream
+          roles:
+            - record
+        - path: rtsp://127.0.0.1:8554/kitchen_sub
+          input_args: preset-rtsp-restream
+          roles:
+            - detect
+    detect:
+      enabled: true
+      width: 896
+      height: 512
+      fps: 5
+    record:
+      enabled: true
+    onvif:
+      host: 10.13.13.12
+      port: 8000
+      user: admin
+      password: YOUR_PASSWORD
+
+# WHY go2rtc?
+# Without: Each viewer (Frigate, Home Assistant, phone) = separate camera connection
+# With: ONE connection to camera, restreamed to all viewers
+# Result: Reduces WiFi load by 50-70%

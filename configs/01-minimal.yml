@@ -1,0 +1,10 @@
+# Phase 1: Minimal Config
+# Purpose: Verify Frigate starts correctly
+# No cameras yet - just getting the system running
+
+mqtt:
+  enabled: false
+
+cameras:
+  # Empty - Frigate will start with just the UI
+  # Access at http://your-ip:5000

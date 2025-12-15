@@ -1,0 +1,63 @@
+# Phase 5: Hailo-8L AI Accelerator (Raspberry Pi 5)
+# Purpose: Offload AI detection to dedicated hardware
+# REQUIRES: Hailo drivers v4.19.x and h8l Docker image
+
+mqtt:
+  enabled: false
+
+# Hailo detector configuration
+detectors:
+  hailo:
+    type: hailo8l
+    device: PCIe
+
+# Hailo model settings
+model:
+  width: 300
+  height: 300
+  input_tensor: nhwc
+  input_pixel_format: bgr
+  model_type: ssd
+  path: /config/model_cache/h8l_cache/ssd_mobilenet_v1.hef
+
+# Use Raspberry Pi hardware acceleration
+ffmpeg:
+  hwaccel_args: preset-rpi-64-h264
+  input_args: preset-rtsp-generic
+
+objects:
+  track:
+    - person
+    - car
+    - dog
+    - cat
+
+record:
+  enabled: true
+  retain:
+    days: 7
+    mode: motion
+
+cameras:
+  front_door:
+    enabled: true
+    ffmpeg:
+      inputs:
+        - path: rtsp://admin:YOUR_PASSWORD@CAMERA_IP:554/h265Preview_01_main
+          roles:
+            - record
+        - path: rtsp://admin:YOUR_PASSWORD@CAMERA_IP:554/h265Preview_01_sub
+          roles:
+            - detect
+    detect:
+      enabled: true
+      width: 896
+      height: 512
+      fps: 5
+    record:
+      enabled: true
+
+# VERIFY in Settings > System Metrics:
+# - Hailo detector should show ~4-10% usage
+# - Inference speed should be <15ms
+# - CPU usage should be <30%

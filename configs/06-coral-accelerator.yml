@@ -1,0 +1,52 @@
+# Phase 5 (Alt): Google Coral USB Accelerator (Desktop)
+# Purpose: Offload AI detection to dedicated hardware
+# REQUIRES: libedgetpu runtime installed
+
+mqtt:
+  enabled: false
+
+# Coral detector configuration
+detectors:
+  coral:
+    type: edgetpu
+    device: usb  # or 'pci' for M.2/PCIe version
+
+ffmpeg:
+  input_args: preset-rtsp-generic
+
+objects:
+  track:
+    - person
+    - car
+    - dog
+    - cat
+
+record:
+  enabled: true
+  retain:
+    days: 7
+    mode: motion
+
+cameras:
+  front_door:
+    enabled: true
+    ffmpeg:
+      inputs:
+        - path: rtsp://admin:YOUR_PASSWORD@CAMERA_IP:554/h265Preview_01_main
+          roles:
+            - record
+        - path: rtsp://admin:YOUR_PASSWORD@CAMERA_IP:554/h265Preview_01_sub
+          roles:
+            - detect
+    detect:
+      enabled: true
+      width: 896
+      height: 512
+      fps: 5
+    record:
+      enabled: true
+
+# VERIFY in Settings > System Metrics:
+# - Coral detector should show moderate usage
+# - Inference speed should be <15ms
+# - CPU usage should be significantly reduced

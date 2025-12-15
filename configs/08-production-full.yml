@@ -1,0 +1,247 @@
+# Phase 7: Production Config (10 Cameras)
+# Full-featured setup with all optimizations
+# Includes: go2rtc, AI accelerator, recording, all features
+
+mqtt:
+  enabled: false
+
+# go2rtc - single connection to each camera
+go2rtc:
+  streams:
+    front_door:
+      - ffmpeg:rtsp://admin:YOUR_PASSWORD@10.13.13.10:554/h265Preview_01_main#video=copy#audio=copy#audio=aac
+    front_door_sub:
+      - ffmpeg:rtsp://admin:YOUR_PASSWORD@10.13.13.10:554/h265Preview_01_sub
+
+    backyard:
+      - ffmpeg:rtsp://admin:YOUR_PASSWORD@10.13.13.11:554/h265Preview_01_main#video=copy#audio=copy#audio=aac
+    backyard_sub:
+      - ffmpeg:rtsp://admin:YOUR_PASSWORD@10.13.13.11:554/h265Preview_01_sub
+
+    kitchen:
+      - ffmpeg:rtsp://admin:YOUR_PASSWORD@10.13.13.12:554/h265Preview_01_main#video=copy#audio=copy#audio=aac
+    kitchen_sub:
+      - ffmpeg:rtsp://admin:YOUR_PASSWORD@10.13.13.12:554/h265Preview_01_sub
+
+    garage:
+      - ffmpeg:rtsp://admin:YOUR_PASSWORD@10.13.13.13:554/h265Preview_01_main#video=copy#audio=copy#audio=aac
+    garage_sub:
+      - ffmpeg:rtsp://admin:YOUR_PASSWORD@10.13.13.13:554/h265Preview_01_sub
+
+    hallway:
+      - ffmpeg:rtsp://admin:YOUR_PASSWORD@10.13.13.14:554/h265Preview_01_main#video=copy#audio=copy#audio=aac
+    hallway_sub:
+      - ffmpeg:rtsp://admin:YOUR_PASSWORD@10.13.13.14:554/h265Preview_01_sub
+
+# AI Detector (choose one)
+detectors:
+  # For Raspberry Pi + Hailo:
+  hailo:
+    type: hailo8l
+    device: PCIe
+
+  # For Desktop + Coral (uncomment and comment hailo):
+  # coral:
+  #   type: edgetpu
+  #   device: usb
+
+# Model config (for Hailo)
+model:
+  width: 300
+  height: 300
+  input_tensor: nhwc
+  input_pixel_format: bgr
+  model_type: ssd
+  path: /config/model_cache/h8l_cache/ssd_mobilenet_v1.hef
+
+# FFmpeg settings
+ffmpeg:
+  hwaccel_args: preset-rpi-64-h264  # Remove for desktop
+  output_args:
+    record: preset-record-generic-audio-aac
+
+# What to detect
+objects:
+  track:
+    - person
+    - car
+    - dog
+    - cat
+  filters:
+    person:
+      min_area: 5000      # Ignore tiny detections
+      max_area: 100000
+      threshold: 0.7      # 70% confidence required
+
+# Recording settings
+record:
+  enabled: true
+  retain:
+    days: 7
+    mode: motion
+  alerts:
+    pre_capture: 5
+    post_capture: 5
+    retain:
+      days: 14
+      mode: motion
+  detections:
+    pre_capture: 3
+    post_capture: 3
+    retain:
+      days: 7
+      mode: motion
+
+# Review settings
+review:
+  alerts:
+    labels:
+      - person
+      - car
+  detections:
+    labels:
+      - person
+      - car
+      - dog
+      - cat
+
+# Optional features (enable as needed)
+semantic_search:
+  enabled: true
+  model_size: small
+
+face_recognition:
+  enabled: false  # Enable if you want facial recognition
+  # model_size: large
+
+# Audio detection (optional)
+audio:
+  enabled: false  # Enable to detect audio events
+  # listen:
+  #   - bark
+  #   - speech
+
+# === CAMERAS ===
+
+cameras:
+  front_door:
+    ffmpeg:
+      inputs:
+        - path: rtsp://127.0.0.1:8554/front_door
+          input_args: preset-rtsp-restream
+          roles: [record, audio]
+        - path: rtsp://127.0.0.1:8554/front_door_sub
+          input_args: preset-rtsp-restream
+          roles: [detect]
+      output_args:
+        record: preset-record-generic-audio-aac
+    detect:
+      enabled: true
+      width: 896
+      height: 512
+      fps: 3  # Reduced for WiFi stability
+    record:
+      enabled: true
+    onvif:
+      host: 10.13.13.10
+      port: 8000
+      user: admin
+      password: YOUR_PASSWORD
+
+  backyard:
+    ffmpeg:
+      inputs:
+        - path: rtsp://127.0.0.1:8554/backyard
+          input_args: preset-rtsp-restream
+          roles: [record, audio]
+        - path: rtsp://127.0.0.1:8554/backyard_sub
+          input_args: preset-rtsp-restream
+          roles: [detect]
+      output_args:
+        record: preset-record-generic-audio-aac
+    detect:
+      enabled: true
+      width: 896
+      height: 512
+      fps: 3
+    record:
+      enabled: true
+    onvif:
+      host: 10.13.13.11
+      port: 8000
+      user: admin
+      password: YOUR_PASSWORD
+
+  kitchen:
+    ffmpeg:
+      inputs:
+        - path: rtsp://127.0.0.1:8554/kitchen
+          input_args: preset-rtsp-restream
+          roles: [record, audio]
+        - path: rtsp://127.0.0.1:8554/kitchen_sub
+          input_args: preset-rtsp-restream
+          roles: [detect]
+      output_args:
+        record: preset-record-generic-audio-aac
+    detect:
+      enabled: true
+      width: 896
+      height: 512
+      fps: 3
+    record:
+      enabled: true
+    onvif:
+      host: 10.13.13.12
+      port: 8000
+      user: admin
+      password: YOUR_PASSWORD
+
+  garage:
+    ffmpeg:
+      inputs:
+        - path: rtsp://127.0.0.1:8554/garage
+          input_args: preset-rtsp-restream
+          roles: [record, audio]
+        - path: rtsp://127.0.0.1:8554/garage_sub
+          input_args: preset-rtsp-restream
+          roles: [detect]
+      output_args:
+        record: preset-record-generic-audio-aac
+    detect:
+      enabled: true
+      width: 896
+      height: 512
+      fps: 3
+    record:
+      enabled: true
+    onvif:
+      host: 10.13.13.13
+      port: 8000
+      user: admin
+      password: YOUR_PASSWORD
+
+  hallway:
+    ffmpeg:
+      inputs:
+        - path: rtsp://127.0.0.1:8554/hallway
+          input_args: preset-rtsp-restream
+          roles: [record, audio]
+        - path: rtsp://127.0.0.1:8554/hallway_sub
+          input_args: preset-rtsp-restream
+          roles: [detect]
+      output_args:
+        record: preset-record-generic-audio-aac
+    detect:
+      enabled: true
+      width: 896
+      height: 512
+      fps: 3
+    record:
+      enabled: true
+    onvif:
+      host: 10.13.13.14
+      port: 8000
+      user: admin
+      password: YOUR_PASSWORD
+
+# Add more cameras following the same pattern...

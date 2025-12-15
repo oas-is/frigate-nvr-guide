@@ -1,0 +1,17 @@
+# OS
+.DS_Store
+Thumbs.db
+
+# Editor
+.vscode/
+.idea/
+
+# Secrets - NEVER commit these
+*.env
+.env.*
+secrets.yml
+credentials.yml
+
+# Frigate data (if testing locally)
+storage/
+*.db

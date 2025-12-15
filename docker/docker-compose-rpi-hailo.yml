@@ -1,0 +1,30 @@
+# Raspberry Pi 5 + Hailo-8L AI HAT
+# REQUIRES: Hailo drivers version 4.19.x installed
+# See README.md for driver installation instructions
+
+version: "3.9"
+services:
+  frigate:
+    container_name: frigate
+    privileged: true
+    restart: unless-stopped
+    image: ghcr.io/blakeblackshear/frigate:stable-h8l  # Note: h8l image!
+    shm_size: "128mb"  # Increase for more cameras
+    devices:
+      - /dev/hailo0:/dev/hailo0       # Hailo AI chip
+      - /dev/video11:/dev/video11     # RPi hardware video decoder
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - ./config:/config
+      - ./storage:/media/frigate
+      - type: tmpfs
+        target: /tmp/cache
+        tmpfs:
+          size: 1000000000  # 1GB RAM cache
+    ports:
+      - "5000:5000"      # Web UI
+      - "8554:8554"      # RTSP feeds
+      - "8555:8555/tcp"  # WebRTC
+      - "8555:8555/udp"  # WebRTC
+    environment:
+      - FRIGATE_RTSP_PASSWORD=YourSecurePassword  # Change this!
